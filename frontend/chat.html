@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060913">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Ask AI · StudyMate AI</title>
+</head>
+<body class="app">
+  <div class="mobile-bar" id="mobileBar"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sb-backdrop" data-sb-close></div>
+
+  <main class="chat">
+    <header class="chat-head">
+      <div class="chat-title"><span id="headTag"></span><h1 id="subjectTitle">Loading…</h1></div>
+      <div class="chat-meta"><span class="live-dot"></span><span>auto-saved</span><span class="hide-sm">· remembers last 4 messages</span></div>
+    </header>
+
+    <div class="messages" id="messages" aria-live="polite">
+      <div class="thread" id="thread"></div>
+    </div>
+    <button class="jump-btn" id="jumpBtn" type="button" aria-label="Scroll to latest" data-icon="arrowDown" hidden></button>
+
+    <form class="composer" id="composer">
+      <div class="composer-box glass">
+        <textarea id="input" rows="1" maxlength="2000" placeholder="Ask a question…" aria-label="Your question" data-primary-input></textarea>
+          <div class="composer-row">
+            <label class="subject-pick" title="Subject">
+              <span id="subjectTagSlot"></span>
+              <select id="subjectSelect" aria-label="Subject"><option value="1">General</option></select>
+              <span data-icon="chevronDown" data-icon-size="15"></span>
+            </label>
+            <span class="spacer"></span>
+            <span class="counter" id="counter">0 / 2000</span>
+            <button class="icon-btn mic-btn" id="micBtn" type="button" aria-label="Speak your question" aria-pressed="false" data-icon="mic"></button>
+            <button class="send-btn" id="sendBtn" type="submit" aria-label="Send question" data-icon="arrowUp" disabled></button>
+          </div>
+      </div>
+      <div class="composer-hint">
+        <span><kbd>Enter</kbd> send</span>
+        <span><kbd>Shift</kbd>+<kbd>Enter</kbd> new line</span>
+        <span><kbd>/</kbd> focus</span>
+        <span><kbd>Ctrl</kbd>+<kbd>K</kbd> commands</span>
+        <span>AI can make mistakes. Check important facts.</span>
+      </div>
+    </form>
+  </main>
+
+  <script src="js/lib/marked.min.js"></script>
+  <script src="js/lib/purify.min.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/shell.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>

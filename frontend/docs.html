@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060913">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <title>My Notes · StudyMate AI</title>
+</head>
+<body class="app">
+  <div class="mobile-bar" id="mobileBar"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sb-backdrop" data-sb-close></div>
+
+  <main class="docs">
+    <section class="doc-list">
+      <div class="doc-list-head">
+        <h1>My Notes</h1>
+        <p>Upload a PDF and ask questions from it</p>
+      </div>
+      <label class="dropzone" id="dropzone" tabindex="0">
+        <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden>
+        <span class="dz-icon" data-icon="upload" data-icon-size="20"></span>
+        <strong>Upload a PDF</strong>
+        <span>Drag and drop, or click to browse · max 10 MB</span>
+      </label>
+      <ul class="doc-items" id="docItems"></ul>
+    </section>
+
+    <section class="chat doc-chat">
+      <header class="chat-head">
+        <div class="chat-title">
+          <button class="icon-btn doc-back" type="button" id="docBack" aria-label="Back to notes" data-icon="arrowLeft"></button>
+          <span class="doc-badge" data-icon="file" data-icon-size="16"></span>
+          <h1 id="docTitle">Your notes</h1>
+        </div>
+        <div class="doc-head-actions">
+          <span class="chat-meta" id="docMeta"></span>
+          <button class="btn btn-ghost btn-sm" type="button" id="openPdf" data-icon="external" data-icon-size="14" hidden><span>Open PDF</span></button>
+        </div>
+      </header>
+
+      <div class="messages" id="messages" aria-live="polite">
+        <div class="thread" id="thread"></div>
+      </div>
+
+      <form class="composer" id="composer">
+        <div class="composer-box glass">
+          <textarea id="input" rows="1" maxlength="2000" placeholder="Upload or pick a PDF to start…" aria-label="Your question" data-primary-input disabled></textarea>
+          <div class="composer-row">
+            <span class="doc-chip" id="docChip"></span>
+            <span class="spacer"></span>
+            <button class="icon-btn mic-btn" id="micBtn" type="button" aria-label="Speak your question" aria-pressed="false" data-icon="mic"></button>
+            <button class="send-btn" id="sendBtn" type="submit" aria-label="Send question" data-icon="arrowUp" disabled></button>
+          </div>
+        </div>
+        <div class="composer-hint"><span>Answers come from your PDF. StudyMate says so when something is not in your notes.</span></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/lib/marked.min.js"></script>
+  <script src="js/lib/purify.min.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/shell.js"></script>
+  <script src="js/docs.js"></script>
+</body>
+</html>

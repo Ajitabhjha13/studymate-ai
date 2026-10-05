@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060913">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Log in · StudyMate AI</title>
+</head>
+<body>
+  <main class="auth">
+    <section class="auth-hero">
+      <span data-brand="index.html"></span>
+      <div class="hero-copy">
+        <span class="hero-badge"><b>Gemini</b> AI tutor for every subject</span>
+        <h1>Your syllabus, explained <span class="grad-text">like a senior would.</span></h1>
+        <p>Ask any question from DBMS to Data Structures and get a clear, step-by-step answer. Every chat is saved by subject, so revision takes minutes.</p>
+      </div>
+
+      <div class="terminal glass" aria-hidden="true">
+        <div class="term-head"><i></i><i></i><i></i><span>studymate — ask</span></div>
+        <div class="term-body" id="termBody"></div>
+      </div>
+
+      <ul class="hero-points">
+        <li><strong><span data-icon="layers"></span>10 subjects</strong>Each subject keeps its own conversation.</li>
+        <li><strong><span data-icon="mic"></span>Voice input</strong>Speak your question instead of typing.</li>
+        <li><strong><span data-icon="history"></span>Saved history</strong>Search and export every answer.</li>
+      </ul>
+    </section>
+
+    <section class="auth-panel">
+      <form class="auth-card glass" data-auth-form="login" novalidate>
+        <nav class="auth-tabs" aria-label="Account">
+          <a href="index.html" aria-current="page">Log in</a>
+          <a href="register.html">Sign up</a>
+        </nav>
+        <h2>Welcome back</h2>
+        <p class="sub">Log in to continue where you left off.</p>
+
+        <div class="form-error" role="alert" hidden></div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="input-wrap"><span data-icon="mail" data-icon-size="17"></span>
+            <input class="input" id="email" name="email" type="email" placeholder="you@college.edu" autocomplete="email" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap"><span data-icon="lock" data-icon-size="17"></span>
+            <input class="input has-reveal" id="password" name="password" type="password" placeholder="Your password" autocomplete="current-password" required>
+            <button class="icon-btn reveal" type="button" data-reveal="password" aria-label="Show password"></button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit">Log in</button>
+        <p class="auth-foot">New to StudyMate? <a href="register.html">Create a free account</a></p>
+      </form>
+    </section>
+  </main>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

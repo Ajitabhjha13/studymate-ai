@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060913">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Settings · StudyMate AI</title>
+</head>
+<body class="app">
+  <div class="mobile-bar" id="mobileBar"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sb-backdrop" data-sb-close></div>
+
+  <main class="page">
+    <div class="page-inner settings">
+      <header class="page-head">
+        <div><h1>Settings</h1><p>Profile, answer language and security</p></div>
+      </header>
+
+      <section class="profile-card panel glass">
+        <span class="avatar avatar-lg" id="pAvatar">?</span>
+        <div class="profile-info">
+          <h2 id="pName">Loading…</h2>
+          <p class="mono" id="pMeta"></p>
+        </div>
+        <div class="profile-stats" id="pStats"></div>
+      </section>
+
+      <form class="panel glass settings-block" id="profileForm">
+        <div class="block-head"><h2>Profile</h2><p>Your name appears on the dashboard and in exported history.</p></div>
+        <div class="field">
+          <label for="name">Full name</label>
+          <div class="input-wrap"><span data-icon="user" data-icon-size="17"></span>
+            <input class="input" id="name" maxlength="100" autocomplete="name" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="input-wrap"><span data-icon="mail" data-icon-size="17"></span>
+            <input class="input" id="email" disabled>
+          </div>
+        </div>
+
+        <div class="block-head" style="margin-top:8px"><h2>Answer language</h2><p>StudyMate will answer in this language in chat, notes and study plans. Voice input follows it too.</p></div>
+        <div class="lang-grid" id="langGrid" role="radiogroup" aria-label="Answer language">
+          <button type="button" class="lang" role="radio" data-v="english"><strong>English</strong><span>A primary key uniquely identifies each row.</span></button>
+          <button type="button" class="lang" role="radio" data-v="hinglish"><strong>Hinglish</strong><span>Primary key har row ko uniquely identify karti hai.</span></button>
+          <button type="button" class="lang" role="radio" data-v="hindi"><strong>हिंदी</strong><span>Primary key हर row को अलग से पहचानती है।</span></button>
+        </div>
+
+        <div class="block-actions"><button class="btn btn-primary" type="submit" id="saveProfile">Save changes</button></div>
+      </form>
+
+      <form class="panel glass settings-block" id="pwForm">
+        <div class="block-head"><h2>Change password</h2><p>Use at least 6 characters. You will stay logged in on this device.</p></div>
+        <div class="form-error" id="pwError" role="alert" hidden></div>
+        <div class="field">
+          <label for="curPw">Current password</label>
+          <div class="input-wrap"><span data-icon="lock" data-icon-size="17"></span>
+            <input class="input" id="curPw" type="password" autocomplete="current-password" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="newPw">New password</label>
+            <div class="input-wrap"><span data-icon="lock" data-icon-size="17"></span>
+              <input class="input" id="newPw" type="password" autocomplete="new-password" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="newPw2">Confirm new password</label>
+            <div class="input-wrap"><span data-icon="lock" data-icon-size="17"></span>
+              <input class="input" id="newPw2" type="password" autocomplete="new-password" required>
+            </div>
+          </div>
+        </div>
+        <div class="block-actions"><button class="btn btn-ghost" type="submit" id="savePw">Update password</button></div>
+      </form>
+
+      <form class="panel settings-block danger-zone" id="deleteForm">
+        <div class="block-head"><h2>Delete account</h2><p>This permanently removes your account, chat history, quiz scores and uploaded PDFs. It cannot be undone.</p></div>
+        <div class="form-error" id="delError" role="alert" hidden></div>
+        <div class="danger-row">
+          <div class="input-wrap"><span data-icon="lock" data-icon-size="17"></span>
+            <input class="input" id="delPw" type="password" placeholder="Enter your password to confirm" autocomplete="current-password">
+          </div>
+          <button class="btn btn-danger" type="submit">Delete my account</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/shell.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
