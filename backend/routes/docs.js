@@ -18,11 +18,21 @@ const { languageRule, getUserLanguage, UPLOAD_DIR } = require('../helpers');
 
 const router = express.Router();
 const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
-const MAX_DOCS = 20;
 
+const MAX_DOCS = Number(process.env.MAX_DOCS) || 20;
+const DOC_COLS = 'd.id, d.user_id, d.name, d.file_name, d.size_bytes, d.created_at';
+
+// Sirf details (PDF ka data nahi), taaki list fast rahe
 async function loadDoc(id, userId) {
-  const [rows] = await pool.query('SELECT * FROM documents WHERE id = ? AND user_id = ?', [id, userId]);
+  const [rows] = await pool.query(`SELECT ${DOC_COLS} FROM documents d WHERE d.id = ? AND d.user_id = ?`, [id, userId]);
   return rows[0];
+}
+
+// PDF ka asli data: pehle database se (cloud), warna purani local file se
+async function readPdf(doc) {
+  const [rows] = await pool.query('SELECT file_data FROM documents WHERE id = ?', [doc.id]);
+  if (rows[0] && rows[0].file_data) return rows[0].file_data;
+  return fs.readFile(path.join(UPLOAD_DIR, doc.file_name));
 }
 
 const docJson = (d) => ({ id: d.id, name: d.name, size: d.size_bytes, createdAt: d.created_at, questions: Number(d.questions || 0) });
@@ -31,7 +41,7 @@ const docJson = (d) => ({ id: d.id, name: d.name, size: d.size_bytes, createdAt:
 router.get('/', auth, async (req, res) => {
   try {
     const [rows] = await pool.query(
-      `SELECT d.*, (SELECT COUNT(*) FROM doc_chats c WHERE c.document_id = d.id) AS questions
+      `SELECT ${DOC_COLS}, (SELECT COUNT(*) FROM doc_chats c WHERE c.document_id = d.id) AS questions
        FROM documents d WHERE d.user_id = ? ORDER BY d.created_at DESC`,
       [req.user.id]
     );
@@ -63,13 +73,11 @@ router.post('/', auth, async (req, res) => {
     const [[{ n }]] = await pool.query('SELECT COUNT(*) AS n FROM documents WHERE user_id = ?', [req.user.id]);
     if (n >= MAX_DOCS) return res.status(400).json({ error: `You can keep up to ${MAX_DOCS} PDFs. Delete one to upload more.` });
 
-    await fs.mkdir(UPLOAD_DIR, { recursive: true });
+    // PDF database mein save hoti hai (cloud servers par disk files restart par mit jaati hain)
     const fileName = `${req.user.id}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}.pdf`;
-    await fs.writeFile(path.join(UPLOAD_DIR, fileName), buffer);
-
     const [result] = await pool.query(
-      'INSERT INTO documents (user_id, name, file_name, size_bytes) VALUES (?, ?, ?, ?)',
-      [req.user.id, original.toLowerCase().endsWith('.pdf') ? original : `${original}.pdf`, fileName, buffer.length]
+      'INSERT INTO documents (user_id, name, file_name, size_bytes, file_data) VALUES (?, ?, ?, ?, ?)',
+      [req.user.id, original.toLowerCase().endsWith('.pdf') ? original : `${original}.pdf`, fileName, buffer.length, buffer]
     );
     const doc = await loadDoc(result.insertId, req.user.id);
     res.status(201).json({ document: docJson(doc) });
@@ -98,9 +106,9 @@ router.get('/:id/file', auth, async (req, res) => {
   try {
     const doc = await loadDoc(Number(req.params.id), req.user.id);
     if (!doc) return res.status(404).json({ error: 'PDF not found.' });
-    res.type('application/pdf').sendFile(path.join(UPLOAD_DIR, doc.file_name), (err) => {
-      if (err && !res.headersSent) res.status(410).json({ error: 'The file is missing. Please upload it again.' });
-    });
+    let data;
+    try { data = await readPdf(doc); } catch { return res.status(410).json({ error: 'The file is missing. Please upload it again.' }); }
+    res.type('application/pdf').send(data);
   } catch (err) {
     res.status(500).json({ error: 'Could not open the PDF.' });
   }
@@ -133,7 +141,7 @@ router.post('/:id/ask', auth, async (req, res) => {
 
     let pdfBase64;
     try {
-      pdfBase64 = (await fs.readFile(path.join(UPLOAD_DIR, doc.file_name))).toString('base64');
+      pdfBase64 = (await readPdf(doc)).toString('base64');
     } catch {
       return res.status(410).json({ error: 'The file is missing on the server. Please upload it again.' });
     }
