@@ -66,7 +66,8 @@ function shuffleQuestion(q) {
 
 // AI ka JSON check karna: galat format wale questions hata dena
 function parseQuestions(text) {
-  const clean = text.replace(/```json|```/g, '').trim();
+  // Sirf bahar ka ```json ... ``` wrapper hatao, questions ke andar ke code blocks nahi
+  const clean = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
   const data = JSON.parse(clean);
   const list = Array.isArray(data) ? data : data.questions;
   return (list || [])
